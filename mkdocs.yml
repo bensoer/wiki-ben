@@ -1,0 +1,35 @@
+site_name: Wiki Ben
+repo_url: https://github.com/bensoer/wiki-ben
+repo_name: bensoer/wiki-ben
+edit_uri: edit/main/docs/
+
+theme: 
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    primary: blue grey
+    accent: indigo
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes 
+    - toc.integrate 
+    - toc.follow
+    - content.action.view
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/bensoer/wiki-ben
+      name: Wiki Ben on Github
+
