@@ -1,6 +1,4 @@
-Kubernetes is a powerfull platform for deploying Docker and container based applications
-
-==Setup A Kubernetes Cluster on Hyper-V==
+# Setup A Kubernetes Cluster on Hyper-V
 
 === Configure Virtual Machines===
 
