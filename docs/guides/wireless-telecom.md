@@ -1,7 +1,5 @@
-==From my time at TELUS==
+# Wireless Telecom
 
-===EARFCN Calculator===
-http://niviuk.free.fr/lte_band.php
+EARFCN Calculator: [http://niviuk.free.fr/lte_band.php](http://niviuk.free.fr/lte_band.php)
 
-===Everything else you need to know===
-http://www.sharetechnote.com/
+Everything Else: [http://www.sharetechnote.com/](http://www.sharetechnote.com/)
