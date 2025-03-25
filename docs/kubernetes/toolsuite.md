@@ -29,14 +29,34 @@ Tools for making cluster wide changes
 | `kubeadm` | Cluster Administration. CRUD nodes, etc. Does not create clusters | | 
 
 
+## Validation / Linting
+Tools for validating / verifying your Kubernetes manifests, helm charts, etc
+
+| Name | Description | Links |
+| ---- | ----------- | ----- |
+| `kubeval` | Validate your kubernetes config files. **Note:** No longer maintained - `kubeconform` seems to be the replacement  | <ul><li>[https://github.com/instrumenta/kubeval](https://github.com/instrumenta/kubeval)</li><li>[https://github.com/yannh/kubeconform](https://github.com/yannh/kubeconform)</li></ul> |
+| `tflint` | Linting and validation for your Terraform. Includes plugins for cloud providers so it can validate things such as instance types and cloud specific configurations | [https://github.com/terraform-linters/tflint](https://github.com/terraform-linters/tflint) |
+
 ## Security
 Security scanners and tools
 
 | Name | Description | Links |
 | ---- | ----------- | ----- |
-| 
+| `trivy` | Works as a CLI tool but also can be installed as an operator in the cluster. Has a handful of scanning tools | |
+| `kube-bench` | CLI scanning tool to validate your cluster against CIS standard. Is integrated into `trivy` as well. | [https://github.com/aquasecurity/kube-bench](https://github.com/aquasecurity/kube-bench) |
+
 
 ## CI/CD Tools
+
+| Name | Description | Links |
+| ---- | ----------- | ----- |
+| ArgoCD | Suite of CD tools including - ArgoCD, ArgoRollouts, ArgoWorkflows and ArgoEvents | |
+| Flux | Is a direct competitor with ArgoCD, however its not as actively maintained and the user base is more in favor of ArgoCD | |
+| Keel | A very simplified ArgoCD-like service. Uses annotations on `Deployments` to configure and track registry container changes and apply updates | |
+| Jenkins | The defacto CI tool. Java, large and clunky, but does do everything. Works well when linked with pipelines via Jenkinsfiles, and use ECS for spawning worker nodes | [https://keel.sh/](https://keel.sh/) |
+| Drone |  Similar to Concourse, but appears even simpler. Has quite a bit of integration with Digital Ocean, Gitea, Github, Bitbucket etc. Looks very small and written all in go | [https://www.drone.io/](https://www.drone.io/) |
+| Concourse | A self-hosted like CircleCI or Github Actions tool. Simple YAML based with container environments for building and deploying services. Doesn't have much best practices or abilities to handle running at scale (common libs) | |
+
 
 
 ## Local Development K8 Tools

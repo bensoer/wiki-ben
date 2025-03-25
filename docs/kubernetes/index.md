@@ -6,3 +6,4 @@
 ## Resources
  - An extensive list of Kubernetes Tools: [https://collabnix.github.io/kubetools/](https://collabnix.github.io/kubetools/)
  - AWS EKS Best Practices Guide: [https://docs.aws.amazon.com/eks/latest/best-practices/introduction.html](https://docs.aws.amazon.com/eks/latest/best-practices/introduction.html)
+ - EKS Workshop: [https://www.eksworkshop.com/](https://www.eksworkshop.com/)
