@@ -1,0 +1,1865 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../nmap/">
+      
+      
+        <link rel="next" href="../rsyslog/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Openvpn - Wiki Ben</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#create-an-easy-rsa-folder-in-your-openvpn-install-directory-mkdir-etcopenvpneasy-rsa" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  PSA: Hey! The wiki is currently being migrated over from its previous WikiMedia engine to this one! Hold tight as some things may
+  not quite be formatted with the new website
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wiki Ben" class="md-header__button md-logo" aria-label="Wiki Ben" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wiki Ben
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Openvpn
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bensoer/wiki-ben" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bensoer/wiki-ben
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wiki Ben" class="md-nav__button md-logo" aria-label="Wiki Ben" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wiki Ben
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bensoer/wiki-ben" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bensoer/wiki-ben
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Cryptography
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Cryptography
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cryptography/aes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Advanced Encryption Standard (AES)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cryptography/des/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Encryption Standard (DES)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cryptography/rsa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RSA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/android/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android Development Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/raw-sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Raw Sockets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/mac-fixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mac Fixes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/virtualbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Convert VirtualBOX VDI to Hyper-V VHD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/wireless-telecom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Wireless Telecom
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../kubernetes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Kubernetes
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kubernetes/configuration-management-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Management Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kubernetes/container-runtimes-and-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Container Runtimes &amp; Their Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kubernetes/kubeadm-kubespray-kops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KOPS vs Kubeadm vs Kubespray
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kubernetes/kubernetes-on-hyperv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup A Kubernetes Cluster on Hyper-V
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kubernetes/toolsuite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tool Suite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/crack-windows-passwords/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crack Windows Passwords
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/server-hardening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Server Hardening
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Services
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Services
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Apache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bind9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bind9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cron/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cron
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Iptables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux-monitoring-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux Monitoring Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux-user-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux user management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mongodb
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mysql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mysql
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nfs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Openvpn
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rsyslog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rsyslog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../samba/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SAMBA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selinux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SELinux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sftp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sftp
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shell-scripting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shell scripting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Snort
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tcp-wrappers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TCP Wrappers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tcpdump/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TCPDump
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/bensoer/wiki-ben/raw/main/docs/services/openvpn.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<p>OpenVPN is a open source VPN application that uses a unique security protocol to implement virtual private networks.
+Read more about it at:
+<em>[https://en.wikipedia.org/wiki/OpenVPN Wikipedia]
+</em>[https://openvpn.net/index.php/open-source/documentation.html OpenVPN Documentation]</p>
+<p>== Install OpenVPN ==
+OpenVPN comes with Easy-RSA, a lightweight package for using the RSA encryption method.<br>
+The install needs to be run as root so execute <code>sudo su</code>
+===Adding apt repositiories===
+ONLY DO THIS IF YOU ARE RUNNING A i386 OR AMD64 ARCHITECTURE!<br>
+Lets add OpenVPN's apt repository to our own list of repositories so that we can get a more up-to-date release than what is in your distribution's repositories.<br>
+Run the following commands:
+:<code><nowiki>wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -</nowiki></code><br>
+:<code><nowiki>echo "deb http://build.openvpn.net/debian/openvpn/stable <osrelease> main" &gt; /etc/apt/sources.list.d/openvpn-aptrepo.list</nowiki></code><br>
+Where <osrelease> depends your distribution:
+<em>squeeze (Debian 6.x)
+</em>wheezy (Debian 7.x)
+<em>jessie (Debian 8.x)
+</em>lucid (Ubuntu 10.04)
+<em>precise (Ubuntu 12.04)
+</em>trusty (Ubuntu 14.04)</p>
+<p>===Install=== 
+Now run <code>apt-get install openvpn</code> and let the install execute. Easy-rsa should be installed along with it, otherwise [https://wiki.bensoer.com/index.php/Apt-get#Usage update and install your dependencies].</p>
+<p>OpenVPN installs to <tt>/etc/openvpn</tt>.</p>
+<p>== Setting Up SSL Certificates ==
+Lets get cryptographic.
+=== Preparing Easy-RSA ===</p>
+<h1 id="create-an-easy-rsa-folder-in-your-openvpn-install-directory-mkdir-etcopenvpneasy-rsa">Create an Easy-RSA folder in your OpenVPN install directory<br> <code>mkdir /etc/openvpn/easy-rsa</code></h1>
+<h1 id="move-your-easy-rsa-install-to-your-openvpn-install-directory-cp-r-usrshareeasy-rsa-etcopenvpn">Move your Easy-RSA install to your OpenVPN install directory<br> <code>cp -r /usr/share/easy-rsa /etc/openvpn/</code></h1>
+<h1 id="navigate-to-the-easy-rsa-folder-we-just-created-cd-etcopenvpneasy-rsa">Navigate to the Easy-RSA folder we just created<br> <code>cd /etc/openvpn/easy-rsa</code></h1>
+<h1 id="edit-the-easy-rsa-variables-file-to-generate-keys-in-our-new-etcopenvpneasy-rsa-directory-nano-vars-change-easy_rsa-variable-to-export-easy_rsaetcopenvpneasy-rsa-and-change-key_size-variable-to-export-key_size4096-also-change-the-default-values-for-key_countryus-key_provinceca-key_citysanfrancisco-key_orgfort-funston-key_emailmemyhostmydomain-and-key_oumyorganizationalunit-so-you-dont-have-to-do-it-multiple-times-later-in-the-key-generation-process">Edit the Easy-RSA variables file to generate keys in our new <tt>/etc/openvpn/easy-rsa</tt> directory<br> <code>nano vars</code><br> change EASY_RSA variable to: <code>export EASY_RSA="/etc/openvpn/easy-rsa"</code><br> and change KEY_SIZE variable to: <code>export KEY_SIZE=4096</code><br> also change the default values for <tt>KEY_COUNTRY="US"</tt>, <tt>KEY_PROVINCE="CA"</tt>, <tt>KEY_CITY="SanFrancisco"</tt>, <tt>KEY_ORG="Fort-Funston"</tt>, <tt>KEY_EMAIL="me@myhost.mydomain"</tt>, and <tt>KEY_OU="MyOrganizationalUnit"</tt> so you don't have to do it multiple times later in the key generation process.</h1>
+<p>=== Building and Signing you Certificate Authority ===</p>
+<h1 id="build-your-certificate-authorityca-source-varsclean-allbuild-ca">Build your certificate authority(CA):<br> <code>source ./vars</code><br><code>./clean-all</code><br><code>./build-ca</code></h1>
+<h1 id="during-the-build-process-it-will-prompt-you-for-some-name-values-for-the-ca-if-you-modified-and-sourced-the-vars-file-correctly-these-values-should-default-to-the-ones-you-entered-earlier">During the build process it will prompt you for some name values for the CA. If you modified and sourced the vars file correctly these values should default to the ones you entered earlier.</h1>
+<h1 id="sign-your-ca-build-key-server-server_name-it-will-prompt-you-for-those-same-values-common-name-must-be-the-same-as-server_name-you-just-picked-you-must-leave-the-challenge-password-blank">Sign your CA:<br> <code>./build-key-server "''Server_Name''"</code><br> It will prompt you for those same values. <tt>Common Name</tt> must be the same as "''Server_Name''" you just picked. You MUST leave the <tt>Challenge Password</tt> blank.</h1>
+<p>=== Creating and Signing Clients ===
+<em>For desktop clients use: <code>./build-key-pass "''UserName''"</code>
+</em>For mobile clients use: <code>./build-key-pkcs12 "''UserName''"</code>
+When prompted to <tt>Enter PEM pass phrase</tt> enter a password that will be used to encrypt your private key. Make sure to remember it as you will need it each time you want to connect to your VPN. Again you MUST leave the <tt>Challenge Password</tt> blank.<br> You could only generate one client key and use the same certificate for every device you wanted to connect to the VPN, however each device connected to the VPN concurrently needs to have a unique certificate and username.</p>
+<p>=== Build the DH parameters ===
+[https://wiki.openssl.org/index.php/Diffie_Hellman Diffie Hellman] parameters must be generated for the OpenVPN server. Run the following commands:<br>
+:<code>cd /etc/openvpn/easy-rsa/</code><br>
+:<code>./build-dh</code><br>
+This process will take the longest time to compute as it is using random numbers and looking for some specific relationships.</p>
+<p>=== OpenVPN's DoS Protection ===
+OpenVPN has build in protection against a hacker finding out your server’s address, and generating such a large number of access requests that your server crashes. By generating a [https://en.wikipedia.org/wiki/Hash-based_message_authentication_code HMAC] key, your server wont attempt to authenticate unless it sees this static key first. Generate one by:<br>
+:<code>openvpn –-genkey –-secret keys/ta.key</code></p>
+<p>=== Understanding your Keys ===
+Now we will find our newly-generated keys and certificates in the keys subdirectory. Here is an explanation of the relevant files:
+{| class="wikitable"
+!Filename
+!Needed By
+!Purpose
+!Secret
+|-
+|ca.crt||server + all clients||Root CA certificate||NO
+|-
+|ca.key||key signing machine only||Root CA key||YES
+|-
+|dh{n}.pem||server only||Diffie Hellman parameters||NO
+|-
+|server.crt||server only||Server Certificate||NO
+|-
+|server.key||server only||Server Key||YES
+|-
+|client1.crt||client1 only||Client1 Certificate||NO
+|-
+|client1.key||client1 only||Client1 Key||YES
+|-
+|client2.crt||client2 only||Client2 Certificate||NO
+|-
+|client2.key||client2 only||Client2 Key||YES
+|-
+|client3.crt||client3 only||Client3 Certificate||NO
+|-
+|client3.key||client3 only||Client3 Key||YES
+|-
+|ta.key||server + all clients||TA Key||YES
+|}</p>
+<p>The final step in the key generation process is to copy all files to the machines which need them, taking care to copy secret files over a secure channel like <code>scp</code>.<br><br>CONGRATULATIONS! You have now created all required SSL certificates needed for your VPN.</p>
+<p>==Config Files==
+It would take too long to go into details about everything in these files. You can find details in the resources mentioned above.
+===Server Config===
+Edit <tt>/etc/openvpn/server.conf</tt> to contain the following:
+ <nowiki>
+port 1194
+proto udp
+dev tun</p>
+<p>ca ca.crt
+cert server.crt
+key server.key</p>
+<p>dh dh4096.pem</p>
+<p>tls-auth ta.key 0</p>
+<p>topology subnet
+server 10.8.0.0 255.255.255.0</p>
+<h1 id="add-route-for-local-subnet">Add route for local subnet</h1>
+<p>push "route 192.168.0.0 255.255.255.0"</p>
+<h1 id="all-clients-redirect-their-default-network-gateway-through-the-vpn">all clients redirect their default network gateway through the VPN</h1>
+<p>push "redirect-gateway def1"</p>
+<h1 id="dns-servers-provided-by-opendnscom">DNS servers provided by opendns.com.</h1>
+<p>;push "dhcp-option DNS 208.67.222.222"
+;push "dhcp-option DNS 208.67.220.220"</p>
+<h1 id="or-google-developers-public-dns">Or Google Developers Public DNS</h1>
+<p>;push "dhcp-option DNS 8.8.8.8"
+;push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 192.168.0.1"</p>
+<p>client-to-client</p>
+<p>keepalive 10 120</p>
+<p>cipher AES-256-CBC</p>
+<p>comp-lzo</p>
+<p>max-clients 5</p>
+<p>user nobody
+group nogroup</p>
+<p>persist-key
+persist-tun</p>
+<p>status /var/log/openvpn/openvpn-status.log
+log /var/log/openvpn/openvpn.log
+verb 3</nowiki></p>
+<p>===Client Config===
+The following is used in a <tt>client.conf</tt> by the openVPN application on a client computer.
+ <nowiki>
+client
+proto udp
+dev tun</p>
+<p>remote my-openVPN-server-IP 1194
+resolv-retry infinite</p>
+<p>nobind</p>
+<p>user nobody
+group nobody</p>
+<p>persist-key
+persist-tun</p>
+<p>ca ca.crt
+cert client.crt
+key client.key</p>
+<p>remote-cert-tls server</p>
+<p>tls-auth ta.key 1</p>
+<p>cipher AES-256-CBC</p>
+<p>auth-nocache</p>
+<p>comp-lzo</p>
+<p>verb 3</nowiki></p>
+<p>===Server Firewall Setup===
+Choose between a simple or more secure firewall script.
+====Basic====
+Since in this setup we are routing all of the clients internet traffic through the VPN we need to be configured to deal with this traffic somehow, such as by NATing it to the internet. This can be accomplished by:<br>
+:<code><nowiki>iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE</nowiki></code><br>
+Note that this solution will only get things up and running. It provides no security whatsoever to your VPN Server.</p>
+<p>====Advanced====
+Below is a link to a sample IPTables firewall that can be tweaked to control traffic passing through the VPN. This configuration includes the masquerading rules mentioned above along with additional security measures for your VPN firewall. This script includes rules to only allow systems located in the local network of the VPN can access the VPN via SSH. Additionally, VPN users cannot access the VPN Server or the Gateway Router, but do have access to all other machines in the local network, and the internet outside of the network. A commented section has been highlighted in the script for users to add additional rules to control what data is allowed through the network.</p>
+<p>https://gist.github.com/bensoer/9fec3386a9460c42511bf8fd49b4a6d8</p>
+<p>To use this script:</p>
+<ol>
+<li>Download and copy it to your VPN server with IPTables installed.</li>
+<li>Open the script using a text editor and update the variables listed in the USER CONFIGURATION section to match that of your network the VPN is being hosted in (see script comments for details).</li>
+<li>Execute the script with the following command: <code>sudo ./openvpnfirewall.sh</code></li>
+</ol>
+
+<p>Status messages will print out as each section of the firewall is applied. To change the firewall, simply update the script and rerun it. The script contains logic to clear the previous firewall settings
+before applying the newly listed ones. If there is an error, follow the prompts given in the console with their locations in the script (a printout in the shell script is preceded with the command 'echo')
+and adjust the code as needed.</p>
+<p>====Script Execution and Firewall Persistance====
+=====Using The Network Interface=====
+In order for this iptables rule to be applied every time you turn on the VPN, you can turn it into a shell script and modify <tt>/etc/network/interfaces</tt> so it will execute the script every time it initializes the network interface eth0.
+ <nowiki>
+...
+iface eth0 inet dhcp
+        pre-up script.sh
+...</nowiki>
+=====Using iptables-save=====
+You can also use <tt>iptables-save</tt> a tool available for Debian, Ubuntu, CentOS and RHEL based distros. After executing your script run the following command to export it:
+ <nowiki></p>
+<h1 id="debian-ubuntu">Debian / Ubuntu</h1>
+<p>iptables-save &gt; /etc/iptables/rules.v4
+ip6tables-save &gt; /etc/iptables/rules.v6</p>
+<h1 id="rhel-centos">RHEL / CentOS</h1>
+<p>iptables-save &gt; /etc/sysconfig/iptables
+iptables-save &gt; /etc/sysconfig/ip6tables</nowiki>
+You may need to mkdir the directory if this is the first use. Ensure also that these directories only have read and write permissions for sudo, and only read for others (<tt>sudo chmod 777</tt>)</p>
+<p>Then install <tt>iptables-persistent</tt>
+ <nowiki>
+sudo apt-get install iptables-persistent</nowiki>
+The installation will prompt to re-export the current iptables rules again. You can say no at this step since we just did it. The iptables-persistance will then ensure that everytime the system
+boots up the the iptables rules we exported above are impported and set. To update the persistence rules at a later time, simply re-export them as done initialy</p>
+<p>To explore the <tt>iptables-save</tt> its co-tool <tt>iptables-restore</tt> and <tt>iptables-persistent</tt>. See the [[Iptables]] page for details</p>
+<p>====Enabling Forwarding====
+If you are running a Raspbian VPN you have to modify <tt>/etc/sysctl.conf</tt> to allow packet forwarding. Uncomment the line <code>net.ipv4.ip_forward=1</code><br>
+Apply the changes we just made by executing: <code>sysctl -p</code></p>
+<p>==Revoking Certificates==
+===Using Easy-RSA===
+Easy-RSA handles revoking client certificates. Navigate to your Easy-RSA directory in your OpenVPN folder:<br>
+:<code>cd /etc/openvpn/easy-rsa/</code><br>
+Run the following to revoke the certificate for the client called 'unwanted-client':<br>
+:<code>./revoke-full unwanted-client</code><br>
+The index.txt file in you keys directory will be updated. You’ll see an ‘R’ (for Revoked) on the first column from the left for unwanted-client. View this with:<br>
+:<code>cat keys/index.txt</code><br>
+You can also examine the CRL (certificate revocation list) file with:<br>
+:<code>openssl crl -in keys/crl.pem -text</code>
+===Configure OpenVPN===
+Now we need to configure our OpenVPN server to enable CRL verification. Add the following line to your <tt>server.conf</tt> file:<br>
+:<code>crl-verify /etc/openvpn/easy-rsa/keys/crl.pem</code><br>
+Reload the OpenVPN config file by:<br>
+:<code>service openvpn reload</code><br>
+When the crl-verify option is used in OpenVPN, the CRL file will be re-read any time a new client connects or an existing client renegotiates the SSL/TLS connection (by default once per hour). This means that you can update the CRL file while the OpenVPN server daemon is running, and have the new CRL take effect immediately for newly connecting clients.</p>
+<p>==Adding LDAP for Active Directory Authentication==
+LDAP is the underlying protocol of Active Directory. In an organization context where there may be multiple servers, controlling authentication in a single place may be desirable. This can also be applied to OpenVPN. OpenVPN can be configured to authenticate with both Certificates and LDAP or LDAP alone. The following instructions will configure for both, as it is the more secure option</p>
+<p>===Installation===
+On your linux machine install
+:<code>apt-get install openvpn-auth-ldap</code><br>
+Depending on whether you are RPM or Debian based will change where the module is installed. On Debian the module will be installed in /etc/openvpn/openvpn-auth-ldap.so. On RPM it is installed in /etc/openvpn/plugin/lib/openvpn-auth-ldap.so</p>
+<p>You will also need to create the following directory to store your ldap configuration
+:<code>mkdir /etc/openvpn/auth</code><br></p>
+<p>===Configuration===
+Copy the following into ldap.conf inside your newly created directory:
+ <nowiki>
+<LDAP></p>
+<h1 id="ldap-server-url">LDAP server URL</h1>
+<p>URL ldap://dc-test-1.test.com:389</p>
+<h1 id="bind-dn-if-your-ldap-server-doesnt-support-anonymous-binds">Bind DN (If your LDAP server doesn't support anonymous binds)</h1>
+<h1 id="binddn-uidadminouusersdctestdccom">BindDN uid=admin,ou=Users,dc=test,dc=com</h1>
+<p>BindDN admin@test.com</p>
+<h1 id="-for-domain-users-also-works">- for domain users <domain>\<username> also works</h1>
+<h1 id="bind-password">Bind Password</h1>
+<p>Password humus</p>
+<h1 id="-this-is-the-password-to-login-to-the-ldap-server-to-authenticate-connecting-users">- this is the password to login to the LDAP server to authenticate connecting users</h1>
+<h1 id="network-timeout-in-seconds">Network timeout (in seconds)</h1>
+<p>Timeout 15</p>
+<h1 id="enable-start-tls">Enable Start TLS</h1>
+<p>TLSEnable no</p>
+<h1 id="follow-ldap-referrals-anonymously">Follow LDAP Referrals (anonymously)</h1>
+<p>FollowReferrals yes</p>
+<h1 id="-only-add-the-following-if-you-are-connecting-securely-to-the-adldap-server">- Only Add The Following if you are connecting securely to the AD/LDAP server</h1>
+<h1 id="tls-ca-certificate-file">TLS CA Certificate File</h1>
+<p>TLSCACertFile /usr/local/etc/ssl/ca.pem</p>
+<h1 id="tls-ca-certificate-directory">TLS CA Certificate Directory</h1>
+<p>TLSCACertDir /etc/ssl/certs</p>
+<h1 id="client-certificate-and-key">Client Certificate and key</h1>
+<h1 id="if-tls-client-authentication-is-required">If TLS client authentication is required</h1>
+<p>TLSCertFile /usr/local/etc/ssl/client-cert.pem
+TLSKeyFile /usr/local/etc/ssl/client-key.pem</p>
+<h1 id="cipher-suite">Cipher Suite</h1>
+<h1 id="the-defaults-are-usually-fine-here">The defaults are usually fine here</h1>
+<h1 id="tlsciphersuite-alladhstrength">TLSCipherSuite ALL:!ADH:@STRENGTH</h1>
+<p></LDAP></p>
+<p><Authorization></p>
+<h1 id="base-dn">Base DN</h1>
+<h1 id="basedn-cnusersdctestdccom">BaseDN "CN=Users,DC=test,DC=com"</h1>
+<p>BaseDN "CN=Users,DC=test,DC=com"</p>
+<h1 id="-basedn-sets-the-base-point-to-start-searching-for-users-to-search-everywhere-in-the-domain-remove-the-cn-portion-each-dc-is-a-part-of-the-domain-split-by-the-dots">- BaseDN sets the base point to start searching for users. To search everywhere in the domain, remove the CN portion. Each DC is a part of the domain split by the dots</h1>
+<h1 id="user-search-filter">User Search Filter</h1>
+<h1 id="searchfilter-uiduaccountstatusactive">SearchFilter "(&amp;(uid=%u)(accountStatus=active))"</h1>
+<h1 id="searchfilter-samaccountnameumsnpallowdialintrue">SearchFilter "(&amp;(sAMAccountName=%u)(msNPAllowDialin=TRUE))"</h1>
+<p>SearchFilter "(&amp;(sAMAccountName=%u))"</p>
+<h1 id="-searchfilter-is-the-search-query-made-within-the-basedn-location-the-above-one-searchs-for-matching-usernames">- SearchFilter is the search query made within the BaseDN location - the above one searchs for matching usernames</h1>
+<h1 id="require-group-membership">Require Group Membership</h1>
+<h1 id="-add-this-if-you-want-to-control-the-ad-users-needing-to-belong-to-a-group-comment-out-if-not">- Add this if you want to control the AD users needing to belong to a group. Comment out if not</h1>
+<p>RequireGroup true</p>
+<h1 id="add-non-group-members-to-a-pf-table-disabled">Add non-group members to a PF table (disabled)</h1>
+<h1 id="pftable-ips_vpn_users">PFTable ips_vpn_users</h1>
+<h1 id="-this-section-is-only-required-if-requiregroup-is-true-however-it-can-still-be-here-even-if-it-is-removed">- This section is only required if RequireGroup is true, however it can still be here even if it is removed</h1>
+<Group>
+BaseDN "CN=Users,DC=test,DC=com"
+# - BaseDN sets the base point to start searching for users. To search everywhere in the domain, remove the CN portion and replace each DC with each part of the domain
+SearchFilter "(cn=vpn-users)"
+# - vpn-users is the name of the group that users must be part of to join
+MemberAttribute "member"
+# Add group members to a PF table (disabled)
+#PFTable ips_vpn_eng
+</Group>
+<p></Authorization></nowiki></p>
+<p>After saving and configurating the above contents in ldap.conf, add the following line to the bottom of the main server.conf
+ <nowiki>
+plugins /etc/openvpn/openvpn-auth-ldap.so "/etc/openvpn/auth/ldap.conf" </nowiki>
+This tells openvpn to use the ldap plugin and load the just created plugin</p>
+<p>Finaly, include the following line in the server.conf depending on what you would like to do:
+* To force Certificate and LDAP authentication add <code>auth-user-pass</code> below the plugin line
+* To only require LDAP authentication add <code>client-cert-not-required</code> below the plugin line</p>
+<p>Finally give openvpn a restart to load the plugin. Check the logs to ensure configuration is correct (Authentication for LDAP typically is an issue if it is not the proper format)</p>
+<p>For full details on this configuration see: https://www.allcloud.io/how-to/configure-openvpn-authentication-using-active-directory/ for details</p>
+<p>== Notes ==
+<em><tt>easy-rsa</tt> might not have installed to <tt>/usr/share/easy-rsa</tt>. It should be somewhere in <tt>/usr/share</tt>, but you might have to search to find the exact path.
+</em>The mathematical relation between a 4096 bit SSL key pair takes too long to generate on a small computer like a RaspberryPi, use 2048.
+*the n in dh{n}.pem is the size of your SSL keys (2048 or 4096)</p>
+<p>==Sources==</p>
+<p>https://openvpn.net/index.php/open-source/documentation/howto.html<br>
+http://readwrite.com/2014/04/10/raspberry-pi-vpn-tutorial-server-secure-web-browsing<br>
+https://www.thomas-krenn.com/en/wiki/Saving_Iptables_Firewall_Rules_Permanently
+<br><br>
+https://openvpn.net/index.php/open-source/documentation/miscellaneous/77-rsa-key-management.html<br>
+https://jamielinux.com/docs/openssl-certificate-authority/introduction.html
+<br><br>
+https://www.allcloud.io/how-to/configure-openvpn-authentication-using-active-directory/<br>
+https://github.com/threerings/openvpn-auth-ldap/blob/master/auth-ldap.conf</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/bensoer/wiki-ben" target="_blank" rel="noopener" title="Wiki Ben on Github" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "toc.integrate", "toc.follow", "content.action.view"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

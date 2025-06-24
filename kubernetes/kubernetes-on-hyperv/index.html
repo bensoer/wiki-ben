@@ -1,0 +1,2343 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../kubeadm-kubespray-kops/">
+      
+      
+        <link rel="next" href="../toolsuite/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Setup A Kubernetes Cluster on Hyper-V - Wiki Ben</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#setup-a-kubernetes-cluster-on-hyper-v" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  PSA: Hey! The wiki is currently being migrated over from its previous WikiMedia engine to this one! Hold tight as some things may
+  not quite be formatted with the new website
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Wiki Ben" class="md-header__button md-logo" aria-label="Wiki Ben" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Wiki Ben
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Setup A Kubernetes Cluster on Hyper-V
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bensoer/wiki-ben" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bensoer/wiki-ben
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Wiki Ben" class="md-nav__button md-logo" aria-label="Wiki Ben" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Wiki Ben
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bensoer/wiki-ben" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bensoer/wiki-ben
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Cryptography
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Cryptography
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cryptography/aes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Advanced Encryption Standard (AES)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cryptography/des/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Encryption Standard (DES)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cryptography/rsa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RSA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/android/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android Development Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/raw-sockets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Raw Sockets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/mac-fixes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mac Fixes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/virtualbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Convert VirtualBOX VDI to Hyper-V VHD
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/wireless-telecom/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Wireless Telecom
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Kubernetes
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration-management-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Management Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../container-runtimes-and-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Container Runtimes &amp; Their Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubeadm-kubespray-kops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    KOPS vs Kubeadm vs Kubespray
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Setup A Kubernetes Cluster on Hyper-V
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Setup A Kubernetes Cluster on Hyper-V
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configure-virtual-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Virtual Machines
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Virtual Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hyper-v-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hyper-V Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Router Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debian-9-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debian 9 Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check-ip-and-mac" class="md-nav__link">
+    <span class="md-ellipsis">
+      Check IP and MAC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-software-on-virtual-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Software On Virtual Machines
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Software On Virtual Machines">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updateupgrade-and-install-ssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update/Upgrade And Install SSH
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Kubernetes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-swap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Swap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125-configure-iptables" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.5 Configure IPTables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#126-start-docker-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.6 Start Docker Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#127-create-checkpoints-in-hyper-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2.7 Create Checkpoints in Hyper-V
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-configure-master-and-minion-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Configure Master and Minion Nodes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 Configure Master and Minion Nodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-master-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3.1 Master Node
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3.1 Master Node">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1311-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3.1.1 Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1312-install-weave-net" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3.1.2 Install Weave Net
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-minion-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3.2 Minion Node
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3.2 Minion Node">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1321-join-master-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3.2.1 Join Master Node
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-validate-and-check-connection-healthstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3.3 Validate And Check Connection Health/Status
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-local-kubectl-to-access-outside-of-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Local Kubectl To Access Outside Of Cluster
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Local Kubectl To Access Outside Of Cluster">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Kubectl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Kubectl
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-kubernetes-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Kubernetes Dashboard
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Kubernetes Dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-rbac-roles-for-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add RBAC Roles For Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-kubernetes-dashboard_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Kubernetes Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-kubernetes-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Kubernetes Dashboard
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-helm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Helm
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Helm">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-rbac-role-for-helm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add RBAC Role For Helm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-helm_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Helm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-kubeapps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Kubeapps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Kubeapps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-kubeapps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Kubeapps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-kubeapps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Kubeapps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-kubeapps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Kubeapps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-metallb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install MetalLB
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install MetalLB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../toolsuite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tool Suite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/crack-windows-passwords/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Crack Windows Passwords
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/server-hardening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Server Hardening
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Services
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Services
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/apache/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Apache
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/bind9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bind9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/cron/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cron
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Iptables
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/linux-monitoring-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux Monitoring Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/linux-user-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux user management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Linux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/mongodb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mongodb
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/mysql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Mysql
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/nfs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nfs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/openvpn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Openvpn
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/rsyslog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Rsyslog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/samba/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SAMBA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/selinux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SELinux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/sftp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sftp
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/shell-scripting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Shell scripting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/snort/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Snort
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/tcp-wrappers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TCP Wrappers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../services/tcpdump/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TCPDump
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+    
+      
+    
+    <a href="https://github.com/bensoer/wiki-ben/raw/main/docs/kubernetes/kubernetes-on-hyperv.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="setup-a-kubernetes-cluster-on-hyper-v">Setup A Kubernetes Cluster on Hyper-V</h1>
+<h2 id="configure-virtual-machines">Configure Virtual Machines</h2>
+<h3 id="hyper-v-configuration">Hyper-V Configuration</h3>
+<p>From the Hyper-V Manager you will be creating 3 new Virtual Machines. 1 Virtual Machine will be the master machine, and 2 others will be minion/node machines. This setup is a basic minimum setup for
+configuring a kubernetes cluster</p>
+<ol>
+<li>From the UI select New &gt; Virtual Machine</li>
+<li>Click Next if prompted the "Before You Begin" section</li>
+<li>Set the virtual machine name. Note that each virtual machine MUST have a unique name. A recommended naming scheme is kmaster1 for the master node and kminion1 and kminion2 for the minions. If you choose to expand your cluster later, you can simply add each vm in their appropriate roles and increment their number value</li>
+<li>Select "Generation 2"</li>
+<li>Assign a minimum of 2 GB of RAM. Recommended is 4GB. Anything less than 2GB your kubernetes cluster will struggle just to run on its own. Also check the "Dynamic Memory" option as this will release memory to the system if the virtual machine is not requiring it. This is especially useful if your hosting system has limited resources</li>
+<li>Configure your networking by selecting the a public switch from the drop-down. Your virtual machines will need an internet connection in order to update and install aswell as Kubernetes in order to contact all of its nodes or use features such as Helm or Kubeapps. Using a public switch is the easiest way to avoid connectivity issues</li>
+<li>Create a virtual hard disk. The default size is sufficient, 200GB is ideal</li>
+<li>Install the operating system from an .iso. For this tutorial we use Debian 9.6. You can download a Debian iso from here: https://www.debian.org/distrib/netinst. These are net install images which will require and internet connection to complete the operating system installation</li>
+<li>Select Finish, and then select the VM from the list and open Settings</li>
+<li>Select "Security" from the Hardware section and uncheck "Enable Secure Boot". This feature does not work well with Linux on Hyper-V</li>
+<li>Select "Processor" from the Hardware section and set the "Number of virtual processors" at minimum to 2. The more CPUs you can provide the better. It is also not an issue to overlap or assign all CPUs on your host provider to each of the kubernetes virtual machines.</li>
+<li>Select "Advanced Features" under the "Network Adapter" section. You may need to expand "Network Adapter" to see the "Advanced Features". Selecting "Advanced Features" set the "MAC Address" to "Static". Kubernetes uses the MAC address and IP to uniquely identify each of its nodes. Hyper-V though will change the MAC address after reboot. You can use https://www.miniwebtool.com/mac-address-generator/ to generate MAC addresses for you to fill in</li>
+<li>Select "OK" at the bottom to close and submit your settings</li>
+</ol>
+<p>You have now configured 1 of the 3 Virtual Machines for your kubernetes cluster. Repeast these steps for the other nodes in the cluster. Remember to give unique name and MAC addresses to each virtual machine created</p>
+<h3 id="router-configuration">Router Configuration</h3>
+<p>Kubernetes requires each node to have a unique hostname, MAC and IP address in order to uniquely identify and contact each member of the cluster. By assigning unique names in Hyper-V and static MAC addresses we have already resolves 2 of these 3 requirements. The last requirement is to assign static IP addresses to each of the virtual machines. This is done by configuring static routing or DHCP reservation in your router where Hyper-V shares the network with. We configured each virtual machine to use the public switch - which means each virtual machine will pretend to be a device on the Hyper-V host machines' network. This means the router will be in charge of assigning IP addresses.</p>
+<p>Access your network router and configure either static routing which will enforce assignment of static IPs to every device in the network or DHCP reservation. DHCP reservation is forcing certain IPs to be assigned to certain machines based on their MAC address. This setup is likely how your own router is configured. Refer to your routers manual or help on how to configure these settings. Having assigned the static MAC addresses and machine names in Hyper-V you can setup the static routing or DHCP reservations before even starting the VMs. This will ensure everything is configured properly before any of the installation process begins.</p>
+<h3 id="debian-9-configuration">Debian 9 Configuration</h3>
+<p>On bootup of the Virtual Machines, the Debian 9 installer will launch. Start the graphical install. Configure the system to have a minimal install. Configure HDD partitioning to put everything on the same partition. Make sure the installation has no GUI as this will consume resources that will not be taken advantage of. This is especially important if your virtual machine is running with limited resources</p>
+<h3 id="check-ip-and-mac">Check IP and MAC</h3>
+<p>Once you have setup static routing or DHCP reservation and completed the Debian 9 install, check that your IP and MAC have been assigned correctly. Check with the following command:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sudo<span class="w"> </span>ip<span class="w"> </span>addr
+</span></code></pre></div>
+Check the listed interfaces that "eth0" has been assigned the IP configured in your router and the MAC configured in Hyper-V</p>
+<h2 id="configure-software-on-virtual-machines">Configure Software On Virtual Machines</h2>
+<p>You have now setup 3 Virtual Machines in Hyper-V. One is labelled as the master and two others labelled as mionion/nodes. Next we need to apply the bare bones software packages
+and system configurations needed for these virtual machines to work in a cluster. Apply the following steps to all 3 Virtual Machines:</p>
+<h3 id="updateupgrade-and-install-ssh">Update/Upgrade And Install SSH</h3>
+<p>Installing SSH on each node is ideal for remote management of the nodes, especially since you will be flipping through them alot during the remainder of this tutorial. Opening more
+ports, especially on a production build, is a risk but comes with added ease of management. SSH can also be easily disabled and removed after completion of the install</p>
+<p>Before any install with new machines, its also good to make sure your nodes are up to date. Execute the following commands to check and install updates for your Debian 9 nodes
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>upgrade<span class="w"> </span>-y
+</span></code></pre></div></p>
+<p>After updating, install ssh server
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>openssh-server
+</span></code></pre></div></p>
+<p>In the latest version of Debian (Debian 9.6 as of this writing), ssh is already included. Executing this command may prompt that it is already installed</p>
+<p>Next, open <code>sshd_config</code> in nano and add or edit the following setting:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>PermitRootLogin yes
+</span></code></pre></div>
+<p>This setting will allow the root user to login over ssh to the system. For best security practices, it is recommended you disable this setting later. Setting this up is
+purely for convenience. Restart SSH to apply your setting changes
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>sshd<span class="w"> </span>restart
+</span></code></pre></div></p>
+<p>You can now access your nodes over SSH!. If you are on linux you can simply connect using ssh in terminal, or for Windows install Putty. This is primarily a convenience feature for all future steps of the installation process</p>
+<h3 id="install-docker">Install Docker</h3>
+<p>Install Docker on Debian 9 with the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>apt-transport-https<span class="w"> </span>ca-certificates<span class="w"> </span>curl<span class="w"> </span>gnupg2<span class="w"> </span>software-properties-common
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/debian/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>apt-key<span class="w"> </span>add<span class="w"> </span>-
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>sudo<span class="w"> </span>add-apt-repository<span class="w"> </span><span class="s2">&quot;deb [arch=amd64] https://download.docker.com/linux/debian </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> stable&quot;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>apt-cache<span class="w"> </span>policy<span class="w"> </span>docker-ce
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker-ce
+</span></code></pre></div>
+<h3 id="install-kubernetes">Install Kubernetes</h3>
+<p>Install Kubernetes for Debian 9 with the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>apt-transport-https<span class="w"> </span>curl
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>https://packages.cloud.google.com/apt/doc/apt-key.gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>apt-key<span class="w"> </span>add<span class="w"> </span>-
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">deb https://apt.kubernetes.io/ kubernetes-xenial main</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s">EOF</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>apt-get<span class="w"> </span>update
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>kubelet<span class="w"> </span>kubeadm<span class="w"> </span>kubectl
+</span></code></pre></div>
+<h3 id="disable-swap">Disable Swap</h3>
+<p>Before starting any nodes, make sure to disable swap. Execute the following command to find the location of your swap file first:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cat<span class="w"> </span>/proc/swaps
+</span></code></pre></div>
+Additionally execute:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>blkid
+</span></code></pre></div>
+To find the id of the swap file block</p>
+<p>Then disable swap on the system by entering:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sudo<span class="w"> </span>swapoff<span class="w"> </span>-a
+</span></code></pre></div>
+This will temporarily disable it and anything using it. If you enter the command <code>cat /proc/swaps</code> again there should
+be nothing listed</p>
+<p>Next, open the file <code>/etc/fstab</code> and comment out any lines referring to the swap path mentioned. Also comment out any entries that
+match the same block id as the swap. It is possible there will be none.</p>
+<p>After commenting it out, delete the swap partition using parted. Execute the following commands</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>parted
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>parted
+</span></code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>PLEASE READ NEXT PART CAREFULY AS IT MAY BRICK THE SYSTEM</p>
+</div>
+<p>This starts up parted. Type <code>print</code> and then enter. This will list all the partitions on the system, look for the one with the same
+name listed when checking <code>cat /proc/swaps</code>. Note the number listed in the one column for that partition. Type <code>rm <number></code> and then
+enter. Confirm the action as you may be prompted by parted that the kernel will not know of the change. Ignore any warnings. Type <code>print</code> again to confirm
+successful removal of the parititon. Type <code>quit</code> to exit parted</p>
+<p>At this point, reboot your server. You will notice the server takes a notable longer amount of time to boot. It is possible it will also fail to boot if
+you rebooted via a restart. A full shutdown and then startup may be required. Again boot up will take longer, this is because swap has been disabled and
+you have essentially disabled system local caching. If booting fails, you have likely deleted the wrong partition or commented out the wrong data
+in <code>/etc/fstab</code></p>
+<h3 id="125-configure-iptables">1.2.5 Configure IPTables</h3>
+<p>If reboot is successful, next edit <code>/etc/sysctl.conf</code> and add to the end of the file the following:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>...
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>#Kubernetes
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>net.bridge.bridge-nf-call-iptables = 1
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>...
+</span></code></pre></div>
+This allows bridged networks to have their traffic passed through iptables</p>
+<h3 id="126-start-docker-service">1.2.6 Start Docker Service</h3>
+<p>Lastly, start the docker service:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker.service
+</span></code></pre></div></p>
+<p>Once this is all complete, reboot your system again</p>
+<h3 id="127-create-checkpoints-in-hyper-v">1.2.7 Create Checkpoints in Hyper-V</h3>
+<p>Upon this all being successfully applied to the master and all minion nodes. Its ideal at this point to create checkpoints in hyper-v. The boxes are ready now to start running as a kubernetes cluster. This is a good point to revert back to if there are any issues during setup. Creating a checkpoint can be done within hyper-v</p>
+<h2 id="13-configure-master-and-minion-nodes">1.3 Configure Master and Minion Nodes</h2>
+<h3 id="131-master-node">1.3.1 Master Node</h3>
+<h4 id="1311-initialization">1.3.1.1 Initialization</h4>
+<p>Execute the following command on the master node to startup kubernetes:</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>kubeadm<span class="w"> </span>init
+</span></code></pre></div>
+Upon that being successful you will be prompted with "Your Kubernetes master has initialized successfully". Below this is some important instructions.</p>
+<p>The first section contains the following commands:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$HOME</span>/.kube
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>sudo<span class="w"> </span>cp<span class="w"> </span>-i<span class="w"> </span>/etc/kubernetes/admin.conf<span class="w"> </span><span class="nv">$HOME</span>/.kube/config
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>sudo<span class="w"> </span>chown<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="nv">$HOME</span>/.kube/config
+</span></code></pre></div>
+Run these commands on the master node. This is to properly setup the config information generated by kubeadm. Do this now</p>
+<p>The second section contains a kubeadm command on how to have your nodes join the master node. It looks something like this
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubeadm<span class="w"> </span>join<span class="w"> </span><span class="m">192</span>.168.1.200:6443<span class="w"> </span>--token<span class="w"> </span>****<span class="w"> </span>--discovery-token-ca-cert-hash<span class="w"> </span>**********
+</span></code></pre></div></p>
+<h4 id="1312-install-weave-net">1.3.1.2 Install Weave Net</h4>
+<p>Before running this second section, kubeadm has not installed all the required components. There is still missing a networking addon. There are multiple
+options available but for this tutorial we will use Weave Net as it requires the least amount of configuration. You can view all other networking addons here: https://kubernetes.io/docs/tasks/administer-cluster/network-policy-provider/weave-network-policy/. </p>
+<p>Execute the following command on the master node to install Weave Net:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;https://cloud.weave.works/k8s/net?k8s-version=</span><span class="k">$(</span>kubectl<span class="w"> </span>version<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+</span></code></pre></div>
+<h3 id="132-minion-node">1.3.2 Minion Node</h3>
+<h4 id="1321-join-master-node">1.3.2.1 Join Master Node</h4>
+<p>Once Weave Net has successfully installed you can then run the kubeadm join command on all of the nodes. The nodes will then join the master node. Again, the join command will have been supplied in the terminal output when initializing the master node. It will look something like this:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubeadm<span class="w"> </span>join<span class="w"> </span><span class="m">192</span>.168.1.200:6443<span class="w"> </span>--token<span class="w"> </span>****<span class="w"> </span>--discovery-token-ca-cert-hash<span class="w"> </span>**********
+</span></code></pre></div>
+<h3 id="133-validate-and-check-connection-healthstatus">1.3.3 Validate And Check Connection Health/Status</h3>
+<p>Once all nodes have successfully joined. Execute the following command on the master node to check their health status:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>kubectl<span class="w"> </span>cluster-info
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</span></code></pre></div>
+cluster-info will show general endpoint information of the cluster. get nodes will then list the connection status of all nodes. If the nodes are not
+all listed as status "Ready" give it a couple minutes and try again. Otherwise enter <code>kubectl describe nodes</code> to get a more verbose log
+output</p>
+<p>Upon all of the nodes displaying the "Ready" status, your Kubernetes cluster is now built. From the master node using kubectl you can now execute commands
+to interact with your cluster.</p>
+<h2 id="configure-local-kubectl-to-access-outside-of-cluster">Configure Local Kubectl To Access Outside Of Cluster</h2>
+<p>With the above setup complete, you are able to interact and use your cluster from within the master node. This may not be desirable, especially if you do not
+want to SSH into the machine, or keep SSH enabled on the cluster virtual machines at all. To resolve this issue, you can install and configure a kubectl
+on your local machine to access your cluster. There are better ways to setup this configuration using RBAC, but this a quick and easy method for home and
+private solutions.</p>
+<h3 id="install-kubectl">Install Kubectl</h3>
+<p>Install Kubectl on your local machine. There are many ways to do this depending on your system. See https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl for details. For debain 9 this can be simply done in terminal by executing the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>apt-transport-https
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>curl<span class="w"> </span>-s<span class="w"> </span>https://packages.cloud.google.com/apt/doc/apt-key.gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>apt-key<span class="w"> </span>add<span class="w"> </span>-
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb https://apt.kubernetes.io/ kubernetes-xenial main&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/apt/sources.list.d/kubernetes.list
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>kubectl
+</span></code></pre></div>
+<h3 id="configure-kubectl">Configure Kubectl</h3>
+<p>This solution simply copied the configuration setup in your master node to your local machine.</p>
+<p>On your local machine create the kubectl config directory:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>mkdir<span class="w"> </span><span class="nv">$HOME</span>/.kube
+</span></code></pre></div></p>
+<p>Then copy over the config file located in the same directory as created above on the master node. You are essentially copying from the file on the master node located at <code>$HOME/.kube/config</code> to your locale machine located also at <code>$HOME/.kube/config</code></p>
+<p>Next, set permissions for the config file so that your local kubectl client can access the config
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>sudo<span class="w"> </span>chown<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="nv">$HOME</span>/.kube/config
+</span></code></pre></div></p>
+<p>Your local kubectl is now configured to connect with your kubernetes cluster. You can test your connection works by calling
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl<span class="w"> </span>cluster-info
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</span></code></pre></div>
+Giving you cluster info and node status'</p>
+<h2 id="install-kubernetes-dashboard">Install Kubernetes Dashboard</h2>
+<p>The Kubernetes Dashboard is a useful minimal dashboard that lets you browse the current state of your Kubernetes cluster. It is extremely useful for debugging and early configuration.</p>
+<h3 id="add-rbac-roles-for-dashboard">Add RBAC Roles For Dashboard</h3>
+<p>Before installing dashboard, you need to have configured the appropriate Roles and User permissions for the Dashboard to operate within. Create the following YAML files to configure RBAC:</p>
+<div class="language-yaml highlight"><span class="filename">dashboard-adminuser.yaml</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin-user</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</span></code></pre></div>
+<div class="language-yaml highlight"><span class="filename">dashboard-rbac.yaml</span><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRoleBinding</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin-user</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="nt">roleRef</span><span class="p">:</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster-admin</span>
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="nt">subjects</span><span class="p">:</span>
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin-user</span>
+</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</span></code></pre></div>
+<p>Apply the above configuration templates using kubectl with the following commands:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>./dashboard-adminuser.yaml
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>./dashboard-rbac.yaml
+</span></code></pre></div></p>
+<h3 id="install-kubernetes-dashboard_1">Install Kubernetes Dashboard</h3>
+<p>Install Kubernetes Dashboard with kubectl:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+</span></code></pre></div></p>
+<h3 id="access-kubernetes-dashboard">Access Kubernetes Dashboard</h3>
+<p>The Kubernetes Dashboard is installed as non public facing, and thus requires the use of the kubectl proxy in order to access it. This requires kubectl to be configured and installed on your local system to and accessing your cluster. Access the dashboard by running the following commands in your local kubectl:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl<span class="w"> </span>proxy
+</span></code></pre></div>
+Note the terminal will hang after executing the command. With the command hanging, all applications from your kubernetes cluster are mapped to localhost. If you terminate the proxy, the mapping will be removed. With the call hanging, you can then access the dashboard at the following url on localhost:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+</span></code></pre></div></p>
+<p>When loading the page you will be prompted to enter a token. This token has been configured with the installation and the RBAC configuration. You can get the value of this token by calling the following command</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>admin-user<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span>
+</span></code></pre></div>
+<p>Copy the secret key into the field and you will be forwarded to the dashboard page. If the proxy is closed or token expiry occurs, you will need to reenter this secret key.</p>
+<p>You have now configured Kubernetes Dashboard in your kubernetes cluster</p>
+<h2 id="install-helm">Install Helm</h2>
+<p>Helm is a kubernetes package manager that allows easy install of popular kubernetes deployable applications. Helm is made of 2 components, a client - which is installed on your local machine, and a server - which is installed inside the kubernetes cluster. Using the kubectl client configured on your local machine, Helm can automatically detect and install itself into the cluster and on your local machine on its own.</p>
+<p>Note as a prerequisite to installing Helm, you must have installed kubectl on your local system, allowing you to remotely access and control your kubernetes cluster from your local computer</p>
+<h3 id="add-rbac-role-for-helm">Add RBAC Role For Helm</h3>
+<p>Helm can be installed and configured without RBAC but it is a preferred best practice for kubernetes installations and securing of helm specifically.</p>
+<p>Create the following yaml file to create the user account adn RBAC role</p>
+<div class="language-yaml highlight"><span class="filename">rbac-config.yaml</span><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiller</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="nn">---</span>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRoleBinding</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiller</span>
+</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="nt">roleRef</span><span class="p">:</span>
+</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="w">  </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io</span>
+</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="w">  </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cluster-admin</span>
+</span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="nt">subjects</span><span class="p">:</span>
+</span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+</span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiller</span>
+</span><span id="__span-30-18"><a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span>
+</span></code></pre></div>
+<p>Apply the above configuration using kubectl with the following command:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>./rbac-config.yaml
+</span></code></pre></div></p>
+<h3 id="install-helm_1">Install Helm</h3>
+<p>On your local machine run the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>curl<span class="w"> </span>https://raw.githubusercontent.com/helm/helm/master/scripts/get<span class="w"> </span>&gt;<span class="w"> </span>get_helm.sh
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>$<span class="w"> </span>chmod<span class="w"> </span><span class="m">700</span><span class="w"> </span>get_helm.sh
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>$<span class="w"> </span>./get_helm.sh
+</span></code></pre></div>
+<p>This will download and install the helm client on your machine. To install the server portion of helm into your kubernetes cluster. Execute the following on your local machine aswell</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>helm<span class="w"> </span>init<span class="w"> </span>--service-account<span class="w"> </span>tiller
+</span></code></pre></div>
+<p><strong>Note:</strong> 'tiller' is the name of the user account we created for RBAC earlier. Note that the install will still succeed if you do not include the <code>--service-account</code> parameter, but the installation will be less secure.</p>
+<p>After the command completes successfully helm will have been installed on your cluster. Helm works by using its local installation and the local kubectl configuration to find the location of your cluster and to map the corresponding piece. Uniquely, with this configuration, you can now also easily install and configure helm in your kubernetes cluster by calling helm on your local machine, just like as you can do with kubectl.</p>
+<h2 id="install-kubeapps">Install Kubeapps</h2>
+<p>Source: https://github.com/kubeapps/kubeapps/blob/master/docs/user/getting-started.md</p>
+<p>Kubeapps is a UI page for browsing, installing and upgrading helm packages. It essentially works as a UI Helm package manager. Note that because of this, installing Helm is a prerequisite to installing Kubeapps</p>
+<h3 id="install-kubeapps_1">Install Kubeapps</h3>
+<p>With Helm already installed, you can install kubeapps by running the following commands with helm:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>bitnami<span class="w"> </span>https://charts.bitnami.com/bitnami
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>helm<span class="w"> </span>install<span class="w"> </span>--name<span class="w"> </span>kubeapps<span class="w"> </span>--namespace<span class="w"> </span>kubeapps<span class="w"> </span>bitnami/kubeapps
+</span></code></pre></div></p>
+<p>Note that this installation will take awhile, as several kubernetes pods have to be deployed, including a mongodatabase. To monitor the startup of kubeapps run the following
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-w<span class="w"> </span>--namespace<span class="w"> </span>kubeapps
+</span></code></pre></div></p>
+<p>This will give you a live status of the kubeapps nodes as they are spawned and started up. If you see errors spawning, it is recommended to load the Kubernetes Dashboard to view startup errors. The kubernetes dashboard will also allow you to view pod status' and logs of each pod.</p>
+<p>An error that can occur is the mongodb pod will fail to start. The error is related to IPv6 as kubeapps assumes your kubernetes cluster supports it. If this is not the case, you will find your deployment failing. The solution is discussed further here: https://github.com/kubeapps/kubeapps/issues/479. From the Kubernetes Dashboard, find the deployment of the mongo database, edit the configuration and find the
+settings <code>MONGODB_ENABLE_IPV6</code>. By default this value is set to "yes", change this value to "no" and save. Kubernetes will automatically redeploy the mongodb node and after a few more minutes the deployment will heal. You can monitor this progress within the Kubernetes Dashboard or by calling</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-w<span class="w"> </span>--namespace<span class="w"> </span>kubeapps
+</span></code></pre></div>
+<h3 id="configure-kubeapps">Configure Kubeapps</h3>
+<p>The Kubeapps page will require an API token in order to access your kubernetes cluster. Create an account and api token with the following commands</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>serviceaccount<span class="w"> </span>kubeapps-operator
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>clusterrolebinding<span class="w"> </span>kubeapps-operator<span class="w"> </span>--clusterrole<span class="o">=</span>cluster-admin<span class="w"> </span>--serviceaccount<span class="o">=</span>default:kubeapps-operator
+</span></code></pre></div>
+<p>Then retrieve the token for usage when accessing the dashboard with the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>serviceaccount<span class="w"> </span>kubeapps-operator<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.secrets[].name}&#39;</span><span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.token}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode
+</span></code></pre></div>
+<h3 id="access-kubeapps">Access Kubeapps</h3>
+<p>You can securely access the kubeapps dashboard by executing the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">POD_NAME</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>kubeapps<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app=kubeapps,release=kubeapps&quot;</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.items[0].metadata.name}&quot;</span><span class="k">)</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>-n<span class="w"> </span>kubeapps<span class="w"> </span><span class="nv">$POD_NAME</span><span class="w"> </span><span class="m">8080</span>:8080
+</span></code></pre></div>
+<p>The above command will hang. You can access the kubeapps dashboard in your browser at http://127.0.0.1:8080. When the page loads you will be prompted to enter the kubernetes API token. Fetch the token as described earlier in "Configure Kubeapps" and enter it. Select Login and you will be brought to the Kubeapps home page</p>
+<p>you have now successfully installed and logged into Kubeapps! From here you can install additional tools and applications from within the GUI</p>
+<h2 id="install-metallb">Install MetalLB</h2>
+<p>Resources: https://metallb.universe.tf/</p>
+<p>MetalLB is a loadbalancing software for barebone installations of kubernetes (This installation). The problem with kubernetes is that its loadbalancer service implementation is designed to work with cloud providers such as Azure or AWS and thus contains no functionality for barebone installations. kubernetes will allow you to create loadbalancer services, but it will never assign them a public IP, making it impossible to make your cluster application publicly accessible</p>
+<h3 id="installation">Installation</h3>
+<p>MetalLB can be easily installed with Helm:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>helm<span class="w"> </span>install<span class="w"> </span>--name<span class="w"> </span>metallb<span class="w"> </span>stable/metallb
+</span></code></pre></div>
+<h3 id="configuration">Configuration</h3>
+<p>MetalLB requires a ConfigMap to be setup before it will start working. The following is a minimum setup for MetalLB:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">metallb-system</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="nt">data</span><span class="p">:</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="w">    </span><span class="no">address-pools:</span>
+</span><span id="__span-41-9"><a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">    </span><span class="no">- name: default</span>
+</span><span id="__span-41-10"><a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a><span class="w">      </span><span class="no">protocol: layer2</span>
+</span><span id="__span-41-11"><a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a><span class="w">      </span><span class="no">addresses:</span>
+</span><span id="__span-41-12"><a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="w">      </span><span class="no">- 192.168.1.240-192.168.1.250</span>
+</span></code></pre></div>
+<p>This implementation simply lets you specify the public ip range that is available on all of your kubernetes nodes. The above for example will make all ips from 240 to 250 available.</p>
+<p>When creating your services now simply use the <code>loadBalancerIP</code> parameter in the spec section of your LoadBalancer config yaml. Specify one of the IPs available in the range
+and create your service as usual. MetalLB comes with also error logging which will show up by typing <code>kubectl describe svc "servicename"</code>. It will print output to the logging output
+normaly presented in this command.</p>
+<p>Make sure to run the ConfigMap configuration above and then redeploy your LoadBalancers using the loadBalancerIP parameter and MetalLB will ensure they are assigned the specified IP. If you have
+LoadBalancers already deployed, you will have to redeploy them for MetalLB to notice.</p>
+<p>Note that MetalLB also does not need to be in the same namespace as the LoadBalancer in order to work</p>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><a href="http://vijayshinva.github.io/kubernetes/2018/07/28/setting-up-a-kubernetes-cluster-on-a-windows-laptop-using-hyper-v.html">http://vijayshinva.github.io/kubernetes/2018/07/28/setting-up-a-kubernetes-cluster-on-a-windows-laptop-using-hyper-v.html</a></li>
+<li><a href="https://www.miniwebtool.com/mac-address-generator/">https://www.miniwebtool.com/mac-address-generator/</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9">https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-debian-9</a></li>
+<li><a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/">https://kubernetes.io/docs/setup/independent/install-kubeadm/</a></li>
+<li><a href="https://serverfault.com/questions/684771/best-way-to-disable-swap-in-linux">https://serverfault.com/questions/684771/best-way-to-disable-swap-in-linux</a></li>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/storage_administration_guide/s2-disk-storage-parted-remove-part">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/storage_administration_guide/s2-disk-storage-parted-remove-part</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/bensoer/wiki-ben" target="_blank" rel="noopener" title="Wiki Ben on Github" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.sections", "navigation.expand", "navigation.path", "navigation.indexes", "toc.integrate", "toc.follow", "content.action.view"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
